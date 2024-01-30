@@ -1,19 +1,26 @@
 package weapon
 
+// Damager represents a type that can damage others.
 type Damager interface {
 	Damage() int
 }
 
+// Enhancer enhances basic weapons with various effects such as
+// elemental damages (e.g. fire), non elemental damages (e.g. poison)
+// and many other damage types as required.
 type Enhancer struct {
 	damager Damager
 }
 
+// NewEnhancer returns a new Enhancer.
 func NewEnhancer(damager Damager) *Enhancer {
 	return &Enhancer{
 		damager: damager,
 	}
 }
 
+// Enhance adds various damage altering effects to the base weapons that
+// correspond to the provided enhancer functions.
 func (e *Enhancer) Enhance(enhancerFns ...EnhancerFn) Damager {
 	for _, enhancerFn := range enhancerFns {
 		e.damager = enhancerFn(e.damager)
@@ -22,8 +29,10 @@ func (e *Enhancer) Enhance(enhancerFns ...EnhancerFn) Damager {
 	return e.damager
 }
 
+// EnhancerFn represents a function that takes a damager, and strengthens it.
 type EnhancerFn func(damager Damager) Damager
 
+// WithThunder adds thunder damage.
 func WithThunder(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateElementalDamage(damager, &elementalDamage{
@@ -35,6 +44,7 @@ func WithThunder(dmg int) EnhancerFn {
 	}
 }
 
+// WithFire adds fire damage.
 func WithFire(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateElementalDamage(damager, &elementalDamage{
@@ -46,6 +56,7 @@ func WithFire(dmg int) EnhancerFn {
 	}
 }
 
+// WithWater adds water damage.
 func WithWater(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateElementalDamage(damager, &elementalDamage{
@@ -57,6 +68,7 @@ func WithWater(dmg int) EnhancerFn {
 	}
 }
 
+// WithEarth adds earth damage.
 func WithEarth(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateElementalDamage(damager, &elementalDamage{
@@ -68,6 +80,7 @@ func WithEarth(dmg int) EnhancerFn {
 	}
 }
 
+// WithDark adds dark damage.
 func WithDark(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateNonElementalDamage(damager, &nonElementalDamage{
@@ -79,6 +92,7 @@ func WithDark(dmg int) EnhancerFn {
 	}
 }
 
+// WithLight adds light damage.
 func WithLight(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateNonElementalDamage(damager, &nonElementalDamage{
@@ -90,6 +104,7 @@ func WithLight(dmg int) EnhancerFn {
 	}
 }
 
+// WithPoison adds poison damage.
 func WithPoison(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateNonElementalDamage(damager, &nonElementalDamage{
@@ -101,6 +116,7 @@ func WithPoison(dmg int) EnhancerFn {
 	}
 }
 
+// WithAcid adds acid damage.
 func WithAcid(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateNonElementalDamage(damager, &nonElementalDamage{
@@ -112,6 +128,7 @@ func WithAcid(dmg int) EnhancerFn {
 	}
 }
 
+// WithChaos adds chaos damage.
 func WithChaos() EnhancerFn {
 	return func(damager Damager) Damager {
 		damager = decorateChaosDamage(damager, &chaosDamage{})
@@ -120,6 +137,7 @@ func WithChaos() EnhancerFn {
 	}
 }
 
+// WithSlash adds slash damage.
 func WithSlash(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		adapter := newDarkSoulsAdapter(damager)
@@ -129,6 +147,7 @@ func WithSlash(dmg int) EnhancerFn {
 	}
 }
 
+// WithPierce adds pierce damage.
 func WithPierce(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		adapter := newDarkSoulsAdapter(damager)
@@ -138,6 +157,7 @@ func WithPierce(dmg int) EnhancerFn {
 	}
 }
 
+// WithStrike adds strike damage.
 func WithStrike(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
 		adapter := newDarkSoulsAdapter(damager)
