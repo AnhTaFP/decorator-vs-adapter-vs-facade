@@ -30,7 +30,7 @@ func main() {
 	enhancedClaymore := claymoreEnhancer.Enhance(
 		weapon.WithSlash(10),  // puts a skill point in slashing mastery
 		weapon.WithThunder(5), // inserts a thunder gemstone
-		weapon.WithPierce(10), // puts a skill point in piercing master
+		weapon.WithPierce(10), // puts a skill point in piercing mastery
 		weapon.WithDark(5),    // inserts a dark gemstone
 	)
 
