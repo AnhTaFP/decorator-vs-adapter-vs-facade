@@ -13,15 +13,6 @@ const (
 	earth
 )
 
-type nonElement int
-
-const (
-	poison nonElement = iota
-	acid
-	dark
-	light
-)
-
 type elementalDamage struct {
 	damager Damager
 	element element
@@ -36,6 +27,15 @@ func decorateElementalDamage(damager Damager, d *elementalDamage) Damager {
 	d.damager = damager
 	return d
 }
+
+type nonElement int
+
+const (
+	poison nonElement = iota
+	acid
+	dark
+	light
+)
 
 type nonElementalDamage struct {
 	damager    Damager
