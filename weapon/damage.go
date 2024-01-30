@@ -4,87 +4,64 @@ import (
 	"math/rand"
 )
 
-type Element int
+type element int
 
 const (
-	Fire Element = iota
-	Water
-	Thunder
-	Earth
+	fire element = iota
+	water
+	thunder
+	earth
 )
 
-type NonElement int
+type nonElement int
 
 const (
-	Poison NonElement = iota
-	Acid
-	Dark
-	Light
+	poison nonElement = iota
+	acid
+	dark
+	light
 )
 
-type Damager interface {
-	Damage() int
+type elementalDamage struct {
+	damager Damager
+	element element
+	dmg     int
 }
 
-type Difficulty int
-
-const (
-	Normal Difficulty = iota
-	Easy
-	Hard
-)
-
-var globalDifficulty Difficulty
-
-type ElementalDamage struct {
-	Damager    Damager
-	Element    Element
-	Dmg        int
-	Difficulty Difficulty
+func (d *elementalDamage) Damage() int {
+	return d.dmg + d.damager.Damage()
 }
 
-func (d *ElementalDamage) Damage() int {
-	dmg := d.Dmg
-
-	if d.Difficulty == Easy {
-		dmg = dmg + (dmg * 10 / 100)
-	} else if d.Difficulty == Hard {
-		dmg = dmg - (dmg * 10 / 100)
-	}
-
-	return dmg + d.Damager.Damage()
-}
-
-func DecorateElementalDamage(damager Damager, d *ElementalDamage) Damager {
-	d.Damager = damager
+func decorateElementalDamage(damager Damager, d *elementalDamage) Damager {
+	d.damager = damager
 	return d
 }
 
-type NonElementalDamage struct {
-	Damager    Damager
-	NonElement NonElement
-	Dmg        int
+type nonElementalDamage struct {
+	damager    Damager
+	nonElement nonElement
+	dmg        int
 }
 
-func (d *NonElementalDamage) Damage() int {
-	return d.Dmg + d.Damager.Damage()
+func (d *nonElementalDamage) Damage() int {
+	return d.dmg + d.damager.Damage()
 }
 
-func DecorateNonElementalDamage(damager Damager, d *NonElementalDamage) Damager {
-	d.Damager = damager
+func decorateNonElementalDamage(damager Damager, d *nonElementalDamage) Damager {
+	d.damager = damager
 	return d
 }
 
-type ChaosDamage struct {
+type chaosDamage struct {
 	Damager Damager
 }
 
-func (d *ChaosDamage) Damage() int {
+func (d *chaosDamage) Damage() int {
 	dmg := rand.Intn(6)
 	return dmg + d.Damager.Damage()
 }
 
-func DecorateChaosDamage(damager Damager, d *ChaosDamage) Damager {
+func decorateChaosDamage(damager Damager, d *chaosDamage) Damager {
 	d.Damager = damager
 	return d
 }

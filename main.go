@@ -11,56 +11,21 @@ func main() {
 		BaseDamage: 10,
 	}
 
-	fireSword := weapon.DecorateElementalDamage(&baseSword, &weapon.ElementalDamage{
-		Element: weapon.Fire,
-		Dmg:     3,
-	})
+	swordEnhancer := weapon.NewEnhancer(&baseSword)
+	excalibur := swordEnhancer.Enhance(
+		weapon.WithFire(3),
+		weapon.WithPoison(1),
+		weapon.WithLight(10),
+	)
 
-	firePoisonSword := weapon.DecorateNonElementalDamage(fireSword, &weapon.NonElementalDamage{
-		NonElement: weapon.Poison,
-		Dmg:        1,
-	})
-
-	excalibur := weapon.DecorateNonElementalDamage(firePoisonSword, &weapon.NonElementalDamage{
-		NonElement: weapon.Light,
-		Dmg:        10,
-	})
-
-	fmt.Printf("excalibur now does %d damage\n", excalibur.Damage())
-
-	// our warrior equips a standard claymore
-	// claymore := weapon.Sword{
-	// 	BaseDamage: 1,
-	// }
-
-	// claymoreAdapter := weapon.NewDarkSoulsAdapter(&claymore)
-
-	// our warrior adds a point in slashing damage mastery
-	// claymoreAdapter.AddSlash(10)
-
-	// our warrior inserts a thunder gemstone
-	// decoratedClaymore := weapon.DecorateElementalDamage(claymoreAdapter, &weapon.ElementalDamage{
-	// Element: weapon.Thunder,
-	// Dmg:     5,
-	// })
-
-	// our warrior adds a point in piercing damage mastery
-	// claymoreAdapter.AddPierce(10)
-
-	// our warrior inserts a dark gemstone
-	// decoratedClaymore = weapon.DecorateNonElementalDamage(decoratedClaymore, &weapon.NonElementalDamage{
-	// 	NonElement: weapon.Dark,
-	// 	Dmg:        5,
-	// })
-
-	// fmt.Printf("claymore now does %d damage\n", decoratedClaymore.Damage())
+	fmt.Printf("sword now does %d damage\n", excalibur.Damage())
 
 	claymore := weapon.Sword{
 		BaseDamage: 1,
 	}
 
-	enhancer := weapon.NewEnhancer(&claymore)
-	enhancedClaymore := enhancer.Enhance(
+	claymoreEnhancer := weapon.NewEnhancer(&claymore)
+	enhancedClaymore := claymoreEnhancer.Enhance(
 		weapon.WithSlash(10),
 		weapon.WithThunder(5),
 		weapon.WithPierce(10),

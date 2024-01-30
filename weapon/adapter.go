@@ -2,20 +2,20 @@ package weapon
 
 import "decorator-vs-adapter-vs-facade/darksouls"
 
-type DarkSoulsAdapter struct {
+type darkSoulsAdapter struct {
 	*darksouls.Weapon
 	damager Damager
 }
 
-func NewDarkSoulsAdapter(damager Damager) *DarkSoulsAdapter {
+func newDarkSoulsAdapter(damager Damager) *darkSoulsAdapter {
 	weapon := darksouls.NewWeapon("weapon-id-1")
 
-	return &DarkSoulsAdapter{
+	return &darkSoulsAdapter{
 		Weapon:  weapon,
 		damager: damager,
 	}
 }
 
-func (a *DarkSoulsAdapter) Damage() int {
+func (a *darkSoulsAdapter) Damage() int {
 	return a.Hit() + a.damager.Damage()
 }
