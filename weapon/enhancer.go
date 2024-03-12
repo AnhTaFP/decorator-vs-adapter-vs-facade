@@ -1,5 +1,9 @@
 package weapon
 
+import (
+	"decorator-vs-adapter-vs-facade/darksouls"
+)
+
 // Damager represents a type that can damage others.
 type Damager interface {
 	Damage() int
@@ -140,29 +144,29 @@ func WithChaos() EnhancerFn {
 // WithSlash adds slash damage.
 func WithSlash(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
-		adapter := newDarkSoulsAdapter(damager)
-		adapter.AddSlash(dmg)
+		wp := darksouls.NewWeapon("slash-weapon-id")
+		adapter := newDarkSoulsAdapter(wp)
 
-		return adapter
+		return decorateSlashDamage(damager, adapter, dmg)
 	}
 }
 
 // WithPierce adds pierce damage.
 func WithPierce(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
-		adapter := newDarkSoulsAdapter(damager)
-		adapter.AddPierce(dmg)
+		wp := darksouls.NewWeapon("pierce-weapon-id")
+		adapter := newDarkSoulsAdapter(wp)
 
-		return adapter
+		return decoratePierceDamage(damager, adapter, dmg)
 	}
 }
 
 // WithStrike adds strike damage.
 func WithStrike(dmg int) EnhancerFn {
 	return func(damager Damager) Damager {
-		adapter := newDarkSoulsAdapter(damager)
-		adapter.AddStrike(dmg)
+		wp := darksouls.NewWeapon("strike-weapon-id")
+		adapter := newDarkSoulsAdapter(wp)
 
-		return adapter
+		return decorateStrikeDamage(damager, adapter, dmg)
 	}
 }

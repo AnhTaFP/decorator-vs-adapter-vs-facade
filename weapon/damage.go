@@ -65,3 +65,36 @@ func decorateChaosDamage(damager Damager, d *chaosDamage) Damager {
 	d.Damager = damager
 	return d
 }
+
+type darksoulsDamage struct {
+	adapter *darkSoulsAdapter
+	damager Damager
+}
+
+func (d *darksoulsDamage) Damage() int {
+	return d.adapter.Damage() + d.damager.Damage()
+}
+
+func decorateSlashDamage(damager Damager, adapter *darkSoulsAdapter, dmg int) Damager {
+	adapter.wp.AddSlash(dmg)
+	return &darksoulsDamage{
+		adapter: adapter,
+		damager: damager,
+	}
+}
+
+func decoratePierceDamage(damager Damager, adapter *darkSoulsAdapter, dmg int) Damager {
+	adapter.wp.AddPierce(dmg)
+	return &darksoulsDamage{
+		adapter: adapter,
+		damager: damager,
+	}
+}
+
+func decorateStrikeDamage(damager Damager, adapter *darkSoulsAdapter, dmg int) Damager {
+	adapter.wp.AddStrike(dmg)
+	return &darksoulsDamage{
+		adapter: adapter,
+		damager: damager,
+	}
+}
